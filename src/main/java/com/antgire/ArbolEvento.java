@@ -28,4 +28,6 @@ public interface ArbolEvento<T> {
     int contarHojas(T nodo);
 
     int altura(T nodo);
+
+    T obtenerRaiz();
 }

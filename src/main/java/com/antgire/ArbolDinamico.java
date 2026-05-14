@@ -1,8 +1,5 @@
 package com.antgire;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class ArbolDinamico implements ArbolEvento<Nodo> {
     private Nodo raiz;
 
@@ -46,6 +43,11 @@ public class ArbolDinamico implements ArbolEvento<Nodo> {
         return nodo == null ? null : nodo.dato;
     }
 
+    @Override
+    public Nodo obtenerRaiz() {
+        return raiz;
+    }
+
     public Nodo buscar(Nodo actual, int id) {
         if (actual == null) return null;
         if (actual.dato.id == id) return actual;
@@ -61,15 +63,19 @@ public class ArbolDinamico implements ArbolEvento<Nodo> {
     public void porNiveles(Nodo nodo) {
         if (nodo == null) return;
 
-        Queue<Nodo> cola = new LinkedList<>();
-        cola.add(nodo);
+        // Usamos una cola manual para cumplir la restricción de no usar estructuras de la librería (LinkedList, ArrayDeque, etc.).
+        int total = contarNodos(nodo);
+        Nodo[] cola = new Nodo[total];
+        int frente = 0, fin = 0;
 
-        while (!cola.isEmpty()) {
-            Nodo actual = cola.poll();
+        cola[fin++] = nodo;
+
+        while (frente < fin) {
+            Nodo actual = cola[frente++];
             System.out.println(actual.dato.titulo);
 
-            if (actual.izquierdo != null) cola.add(actual.izquierdo);
-            if (actual.derecho != null) cola.add(actual.derecho);
+            if (actual.izquierdo != null) cola[fin++] = actual.izquierdo;
+            if (actual.derecho != null) cola[fin++] = actual.derecho;
         }
     }
 

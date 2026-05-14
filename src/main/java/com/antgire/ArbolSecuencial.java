@@ -69,6 +69,11 @@ public class ArbolSecuencial implements ArbolEvento<Integer> {
         return arbol[nodo];
     }
 
+    @Override
+    public Integer obtenerRaiz() {
+        return arbol[0] != null ? 0 : null;
+    }
+
     public int buscar(int id) {
         for (int i = 0; i < sizeMax; i++) {
             if (arbol[i] != null && arbol[i].id == id) {
@@ -111,18 +116,22 @@ public class ArbolSecuencial implements ArbolEvento<Integer> {
     public void porNiveles(Integer nodo) {
         if (nodo == null || nodo >= sizeMax || arbol[nodo] == null) return;
 
-        java.util.Queue<Integer> cola = new java.util.ArrayDeque<>();
-        cola.add(nodo);
+        // Cola manual basada en array con tamaño igual al número de nodos del subárbol
+        int total = contarNodos(nodo);
+        int[] cola = new int[total];
+        int frente = 0, fin = 0;
 
-        while (!cola.isEmpty()) {
-            Integer actual = cola.poll();
+        cola[fin++] = nodo;
+
+        while (frente < fin) {
+            int actual = cola[frente++];
             System.out.println(arbol[actual].titulo);
 
             Integer izquierdo = hijoIzquierdo(actual);
             Integer derecho = hijoDerecho(actual);
 
-            if (izquierdo != null) cola.add(izquierdo);
-            if (derecho != null) cola.add(derecho);
+            if (izquierdo != null) cola[fin++] = izquierdo;
+            if (derecho != null) cola[fin++] = derecho;
         }
     }
 
